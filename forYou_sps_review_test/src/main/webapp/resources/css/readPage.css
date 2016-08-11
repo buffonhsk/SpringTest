@@ -1,0 +1,88 @@
+/* readPage */
+
+.mypage-wrap{
+	 width: 793px;
+
+  background: white;
+  padding: 30px;
+  margin: 0 auto;
+}
+.mypage-content .title{
+	color: #494d63;
+  border-bottom: 3px solid #494d63;
+  padding: 0 0 10px 0;
+  margin: 0 0 20px 0;
+  font-size: 14pt;
+  font-weight: bold;
+}
+.board-wrap .board-default .article-title{
+	font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 5px;
+}
+.alert.alert-hint{
+	border: 1px solid #eee;
+  background: linear-gradient(#619ed3, #428bca);
+}
+.alert{
+	 padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 0px;
+}
+
+.board-wrap .board-default .article-info{
+	 list-style: none;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  border: 1px solid #eee;
+  margin-bottom: 5px;
+}
+.board-wrap .board-default .article-info li.property{
+	 width: 71px;
+  text-align: center;
+  background: linear-gradient(#619ed3, #428bca);
+  color: #fff;
+}
+.board-wrap .board-default .article-info li:first-child{
+	 border-left: 0px solid transparent;
+}
+.board-wrap .board-default .article-info li{
+	float: left;
+  padding: 7px 10px;
+  border-left: 1px solid #eee;
+}
+.board-wrap .board-default .article-info li.property {
+  width: 71px;
+  text-align: center;
+ 
+}
+
+.board-wrap .board-default .article-info li.value{
+	 width: 172px;
+}
+
+.board-wrap .board-default .article-body{
+	 padding: 10px 0;
+}
+.board-wrap .board-default .article-menu{
+	 border-top: 1px solid #eee;
+  padding: 10px 0;
+}
+input[type=button].main-btn, input[type=submit].main-btn, button.main-btn, a.main-btn{
+	border: 1px solid #619ed3;
+  background:linear-gradient(#619ed3, #428bca);
+  color: white;
+}
+
+/* register board */
+textarea.input-sm{
+	border: 13px solid #468dcb;
+	
+}
+.input-sm{
+	font-size: 16px;
+}

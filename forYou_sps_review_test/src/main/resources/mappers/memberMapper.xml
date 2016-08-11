@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.MemberMapper">
+	
+	
+	<insert id="insertMember">
+		insert into userMember (userid, userpw, username, email, contactNum) 
+		values (#{userid}, #{userpw}, #{username}, #{email}, #{contactNum}) 
+	</insert>
+	
+	<select id="readMember" resultType="kr.co.choongang.domain.MemberVO">
+	
+		select mNo, userid, userpw, username, email, contactNum from userMember
+		where mNo = #{mNo}
+	
+	</select>
+	
+	<update id="updateMember">
+	update userMember set userpw = #{userpw}, email = #{email}, contactNum = #{contactNum}
+	where mNo = #{mNo}
+	</update>
+	
+	<delete id="deleteMember">
+		delete from userMember where mNo = #{mNo}
+	</delete>
+	
+	<select id="chkMbId" resultType="int">
+		select count(*) from userMember
+		where userid = #{userid}
+	</select>
+	
+	<select id="chkMbEmail" resultType="int">
+		select count(*) from userMember
+		where email = #{email}
+	</select>
+	
+	<select id="login" resultType="MemberVO">
+		select * from userMember 
+			where userid = #{userid} and userpw = #{userpw}
+	</select>
+
+</mapper>

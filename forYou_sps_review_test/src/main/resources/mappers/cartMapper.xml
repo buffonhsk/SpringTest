@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.CartMapper">
+
+	<resultMap id="shop_Map" type="ShopVO">
+
+		<result property="id" column="shop_id" />
+
+		<result property="title" column="shop_title" />
+
+		<result property="price" column="shop_price" />
+
+
+		<association property="memberVO" javaType="MemberVO">
+
+			<id property="mNo" column="member_mNo" />
+
+			<id property="userid" column="member_id" />
+
+			<id property="email" column="member_email" />
+
+		</association>
+
+		<association property="talentBoardVO" javaType="TalentBoardVO">
+
+			<id property="id" column="talentBoard_id" />
+
+			<id property="title" column="talentBoard_title" />
+
+			<id property="price" column="talentBoard_price" />
+			
+			<id property="price" column="talentBoard_price" />
+
+			<result property="image" column="tboard_image" />
+			
+		</association>
+
+	</resultMap>
+
+
+	<insert id="cartAdd">
+
+		insert into user_shop (title, price, userMember_mNo, user_talents_id)
+			SELECT
+				tb.title as talentBoard_title,
+				tb.price as talentBoard_price,
+				m.mNo as member_mNo,
+				tb.id as talentBoard_id
+		FROM userMember m
+		inner join user_talents tb
+		ON m.mNo = #{memberVO.mNo} and tb.id = #{talentBoardVO.id};
+
+	</insert>
+	
+	<select id="cartList" resultMap="shop_Map">
+		
+		SELECT  
+		s.id as shop_id,
+		s.title as shop_title, 
+		s.price as shop_price,
+		s.userMember_mNo as member_mNo,
+		s.user_talents_id as talentBoard_id,
+		tb.image as tboard_image,
+		m.userid as member_id
+		FROM user_shop s
+		inner join user_talents tb
+		inner join userMember m
+		on s.userMember_mNo = #{memberVO.mNo} and tb.id = s.user_talents_id and m.mNo = s.userMember_mNo
+		order by s.id desc;
+	
+	</select>
+	
+	<delete id="cartRemove">
+		delete 
+		from user_shop
+		where id = #{id};
+	</delete>
+
+	<delete id="cartAllRemove">
+		delete 
+		from user_shop
+		where userMember_mNo = #{mNo};
+	</delete>
+
+
+</mapper>

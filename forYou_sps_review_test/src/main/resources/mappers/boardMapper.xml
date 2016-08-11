@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.BoardMapper">
+
+	<resultMap id="tBoard_Map" type="TalentBoardVO">
+
+		<result property="id" column="tboard_id" />
+
+		<result property="image" column="tboard_image" />
+
+		<result property="title" column="tboard_title" />
+
+		<result property="price" column="tboard_price" />
+
+		<result property="contents" column="tboard_contents" />
+
+		<result property="regdate" column="tboard_regdate" />
+
+		<result property="cnt" column="tboard_cnt" />
+
+
+		<association property="memberVO" javaType="MemberVO">
+
+			<id property="mNo" column="member_mNo" />
+
+			<id property="userid" column="member_id" />
+
+			<id property="email" column="member_email" />
+
+		</association>
+
+		<association property="catalogVO" javaType="CatalogVO">
+
+			<id property="id" column="catalog_id" />
+
+			<id property="type" column="catalog_type" />
+
+		</association>
+
+	</resultMap>
+
+
+	<insert id="create">
+		insert into user_talents (userMember_mNo, image,
+		title, price, contents, catalog_id)
+		values (#{memberVO.mNo}, #{imageName}, #{title}, #{price}, #{contents},
+		#{catalogVO.id})
+	</insert>
+
+	<select id="readBoard" resultMap="tBoard_Map">
+
+		select
+	        tb.id as tboard_id,
+			tb.image as tboard_image,
+			tb.title as tboard_title,
+			tb.price as tboard_price,
+	        tb.userMember_mNo as userMember_mNo,
+			tb.contents as tboard_contents,
+			date_format(tb.regdate, '%Y-%m-%d') as tboard_regdate,
+			tb.cnt as tboard_cnt,
+			m.mNo as member_mNo,
+			m.userid as member_id,
+			m.email as member_email
+		from user_talents as tb
+		inner join userMember m
+		on tb.userMember_mNo = m.mNo and tb.id = ${id}
+        order by tb.regdate desc;
+
+	</select>
+
+	<update id="updateBoard">
+		update user_talents set image = #{imageName}, title = #{title}, price =
+		#{price}, contents = #{contents}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteMember">
+		delete from user_talents where id = #{id}
+	</delete>
+
+	<select id="listAll" resultMap="tBoard_Map">
+		select
+	        tb.id as tboard_id,
+			tb.image as tboard_image,
+			tb.title as tboard_title,
+			tb.price as tboard_price,
+			tb.contents as tboard_contents,
+			date_format(tb.regdate, '%Y-%m-%d') as tboard_regdate,
+			tb.cnt as tboard_cnt,
+			m.mNo as member_mNo,
+			m.userid as member_id,
+			m.email as member_email
+		from user_talents as tb
+		inner join userMember m
+		on tb.userMember_mNo = m.mNo
+		order by tb.regdate desc
+	
+	</select>
+	<!-- <select id="listAll" resultType="TalentBoardVO">
+	 <![CDATA[
+		select id, image, title, price, contents, regdate
+		from user_talents where id > 0 
+		order by regdate desc
+	 ]]>
+	</select> -->
+	
+	<select id="mainNewList" resultMap="tBoard_Map">
+		select
+	        tb.id as tboard_id,
+			tb.image as tboard_image,
+			tb.title as tboard_title,
+			tb.price as tboard_price,
+			tb.contents as tboard_contents,
+			date_format(tb.regdate, '%Y-%m-%d') as tboard_regdate,
+			tb.cnt as tboard_cnt,
+			m.mNo as member_mNo,
+			m.userid as member_id,
+			m.email as member_email
+		from user_talents as tb
+		inner join userMember m
+		on tb.userMember_mNo = m.mNo
+		order by tb.regdate desc
+		limit 4
+	</select>
+	
+
+	<select id="listPage" resultType="TalentBoardVO">
+	 <![CDATA[
+		select id, image, title, price, contents, date_format(regdate, '%Y-%m-%d')
+		from user_talents where id > 0 
+		order by regdate desc
+		limit #{page}, 10
+		]]>
+	</select>
+
+	<select id="listCriteria" resultType="TalentBoardVO">
+	 <![CDATA[
+		select id, image, title, price, contents, date_format(regdate, '%Y-%m-%d')
+		from user_talents where id > 0 
+		order by regdate desc
+		limit #{pageStart}, #{perPageNum}
+		]]>
+	</select>
+
+	<select id="countPaging" resultType="int">
+	 <![CDATA[
+		select count(id)
+		from user_talents where id > 0 
+		]]>
+
+	</select>
+
+
+	<!-- search mapper -->
+
+
+	<select id="tListSearch" resultMap="tBoard_Map">
+	
+	<![CDATA[
+	
+			select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+			from user_talents tb
+			inner join catalog c
+			inner join userMember m
+			on tb.catalog_id = c.id and tb.userMember_mNo = m.mNo
+	]]>
+		<include refid="search"></include>
+		
+	<![CDATA[
+		order by tb.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+	<select id="tListSearchCount" resultType="int">
+	 <![CDATA[
+	 	select count(*) 
+		from user_talents tb
+		left outer join catalog c
+		on tb.catalog_id = c.id
+	 ]]>
+		<include refid="search"></include>
+	</select>
+
+	<sql id="search">
+		<if test="searchType != null">
+
+			<if test="searchType == 't'.toString()">
+				and tb.title like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'g'.toString()">
+				where tb.catalog_id = 1
+				and tb.title like CONCAT('%',
+				#{keyword}, '%')
+			</if>
+			<if test="searchType == 'd'.toString()">
+				where tb.catalog_id = 2
+				and tb.title like CONCAT('%',
+				#{keyword}, '%')
+			</if>
+			<if test="searchType == 's'.toString()">
+				where tb.catalog_id = 3
+				and tb.title like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				where tb.catalog_id = 4
+				and tb.title like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'm'.toString()">
+				where tb.catalog_id = 5
+				and tb.title like CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- total search -->
+	<!-- <select id="tatalListSearch" resultType="TalentBoardVO"> <![CDATA[ 
+		select * from user_talents where id > 0 ]]> <include refid="search"></include> 
+		<![CDATA[ order by id desc limit #{pageStart}, #{perPageNum} ]]> </select> 
+		<select id="tatalListSearchCount" resultType="int"> <![CDATA[ select * from 
+		user_talents where id > 0 ]]> <include refid="search"></include> </select> -->
+
+</mapper>

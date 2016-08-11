@@ -1,0 +1,168 @@
+.blind {
+	visibility: hidden;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	font-size: 0;
+	line-height: 0
+}
+
+.tb_list {
+	border: none;
+	border-top: 1px solid #383d4a;
+	border-bottom: 1px solid #dddde1;
+	width: 60%;
+	margin: 40px auto;
+}
+
+.tb_list th {
+	padding: 13px 0 12px;
+	border-top: 1px solid #383d4a;
+	color: #20232c;
+	font-weight: normal
+}
+
+.tb_list span.num {
+	color: #20232c;
+}
+
+.tb_list td span {
+	display: block;
+	color: #b6b7bc;
+	font-size: 11px;
+	letter-spacing: -1px;
+}
+
+.tb_list th, .tb_list td {
+	border: none;
+	text-align: center;
+}
+
+.tb_list th input {
+	width: 13px;
+	height: 13px;
+	margin: -1px 5px 1px 0;
+	vertical-align: middle
+}
+
+.tb_list th.product {
+	padding-left: 10px;
+	text-align: left
+}
+
+.tb_list th strong {
+	letter-spacing: -1px
+}
+
+.tb_list .bg_point {
+	border-left: 1px solid #edeeef;
+	background-color: #f7f7f7
+}
+
+.tb_list td {
+	padding: 15px 0;
+	border-top: 1px solid #edeeef;
+	color: #20232c;
+	vertical-align: middle;
+	word-wrap: break-word;
+	word-break: break-all
+}
+
+.tb_list td.product .thmb {
+	float: left;
+	margin-right: 17px
+}
+
+.tb_list td.product .thmb .img_center {
+	width: 100px;
+	text-align: left;
+}
+
+.tb_list td.product .thmb .img_center ._view_image_area {
+	width: 100px;
+}
+
+.tb_list td.product dl {
+	display: block !important;
+	overflow: hidden;
+	*float: left
+}
+
+.tb_list td.product dt.zzim_add {
+	position: relative;
+	padding-right: 50px;
+	margin-top: 15px;
+}
+
+.tb_list td.product dt {
+	margin-bottom: 3px;
+	line-height: 18px;
+}
+
+.tb_list tfoot td {
+	padding: 8px 0 6px;
+	font-size: 11px;
+	line-height: 15px;
+	color: #565960;
+	letter-spacing: -1px
+}
+
+.tb_list tfoot td.tot {
+	vertical-align: bottom
+}
+
+.tb_list tfoot td.amount {
+	border-top: none;
+	color: #fff;
+	font-size: 12px
+}
+
+.tb_list .bg_point2 {
+	background-color: #428bca;
+}
+
+.tb_list tfoot td.tot li {
+	line-height: 24px
+}
+
+.tb_list tfoot td.tot li p {
+	font-weight: bold;
+	line-height: 24px
+}
+
+.tb_list tfoot td.amount li p em {
+	color: #fff;
+	font-weight: bold;
+	letter-spacing: 0
+}
+
+.img_center a {
+	display: inline-block;
+}
+
+.btn_product_group {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.btn_product_group a {
+	display: inline-block;
+	height: 20px;
+}
+
+.btn_section {
+	text-align: center;
+}
+
+.mgt40 {
+	margin-top: 40px !important
+}
+
+._subTotal{
+    background: #428bca;
+    border: none;
+    width: 50px;
+}

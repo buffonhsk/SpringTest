@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.NoteMapper">
+
+	<resultMap id="note_Map" type="NoteVO">
+
+		<result property="id" column="note_id" />
+
+		<result property="title" column="note_title" />
+
+		<result property="contents" column="note_contents" />
+
+		<result property="regdate" column="note_regdate" />
+
+		<association property="memberVO" javaType="MemberVO">
+
+			<id property="mNo" column="member_mNo" />
+
+			<id property="userid" column="member_id" />
+
+			<id property="email" column="member_email" />
+
+		</association>
+
+	</resultMap>
+
+
+	<insert id="create">
+		insert into user_note (title, contents, userMember_mNo)
+		values (#{title}, #{contents}, #{memberVO.mNo})
+	</insert>
+
+	<select id="readBoard" resultMap="note_Map">
+
+		select
+	        n.id as note_id,
+			n.title as note_title,
+			n.contents as note_contents,
+			date_format(n.regdate, '%Y-%m-%d') as note_regdate,
+			n.userMember_mNo as userMember_mNo,
+			m.mNo as member_mNo,
+			m.userid as member_id,
+			m.email as member_email
+		from user_note as n
+		inner join userMember m
+		on n.userMember_mNo = m.mNo and n.id = ${id}
+        order by n.regdate desc;
+
+	</select>
+
+	<update id="updateBoard">
+		update user_note set title = #{title}, contents =
+		#{contents}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteBoard">
+		delete from user_note where id = #{id}
+	</delete>
+
+	<select id="nListCriteria" resultMap="note_Map">
+		<![CDATA[
+		select 
+			n.id as note_id,
+			n.title as note_title, 
+			n.contents as note_contents, 
+			date_format(n.regdate, '%Y-%m-%d') as note_regdate, 
+			m.userid as member_id
+		from user_note as n
+		inner join userMember m
+		on m.mNo = n.userMember_mNo
+        order by n.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+	</select>
+	
+
+	<select id="nListCountCriteria" resultType="int">
+	 <![CDATA[
+		select count(id)
+		from user_note
+		]]>
+	</select>
+
+	
+</mapper>

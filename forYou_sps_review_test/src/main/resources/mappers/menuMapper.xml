@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.MenuMapper">
+
+	<resultMap id="tBoard_Map" type="TalentBoardVO">
+
+		<result property="id" column="tboard_id" />
+
+		<result property="image" column="tboard_image" />
+
+		<result property="title" column="tboard_title" />
+
+		<result property="price" column="tboard_price" />
+
+		<result property="contents" column="tboard_contents" />
+
+		<result property="regdate" column="tboard_regdate" />
+
+		<result property="cnt" column="tboard_cnt" />
+
+
+		<association property="memberVO" javaType="MemberVO">
+
+			<id property="mNo" column="member_mNo" />
+
+			<id property="userid" column="member_id" />
+
+			<id property="email" column="member_email" />
+
+		</association>
+
+		<association property="catalogVO" javaType="CatalogVO">
+
+			<id property="id" column="catalog_id" />
+
+			<id property="type" column="catalog_type" />
+
+		</association>
+
+	</resultMap>
+
+	<select id="gListCriteria" resultMap="tBoard_Map">
+	
+	<![CDATA[
+		select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+		from user_talents as tb
+		inner join userMember m
+		on tb.catalog_id = 1 and m.mNo = tb.userMember_mNo
+        order by tb.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+	<select id="gCountPaging" resultType="int">
+	 <![CDATA[
+	 	select count(id)
+		from user_talents where catalog_id = 1
+	 ]]>
+	</select>
+
+	<select id="dListCriteria" resultMap="tBoard_Map">
+	
+	<![CDATA[
+		select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+		from user_talents as tb
+		inner join userMember m
+		on tb.catalog_id = 2 and m.mNo = tb.userMember_mNo
+        order by tb.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+	<select id="dCountPaging" resultType="int">
+	 <![CDATA[
+	 	select count(id)
+		from user_talents where catalog_id = 2
+	 ]]>
+	</select>
+
+	<select id="sListCriteria" resultMap="tBoard_Map">
+	
+	<![CDATA[
+		select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+		from user_talents as tb
+		inner join userMember m
+		on tb.catalog_id = 3 and m.mNo = tb.userMember_mNo
+        order by tb.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+	<select id="sCountPaging" resultType="int">
+	 <![CDATA[
+	 	select count(id)
+		from user_talents where catalog_id = 3
+	 ]]>
+	</select>
+	
+	<select id="mListCriteria" resultMap="tBoard_Map">
+	
+	<![CDATA[
+		select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+		from user_talents as tb
+		inner join userMember m
+		on tb.catalog_id = 4 and m.mNo = tb.userMember_mNo
+        order by tb.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+	<select id="mCountPaging" resultType="int">
+	 <![CDATA[
+	 	select count(id)
+		from user_talents where catalog_id = 4
+	 ]]>
+	</select>
+	
+	<select id="cListCriteria" resultMap="tBoard_Map">
+	
+	<![CDATA[
+		select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+		from user_talents as tb
+		inner join userMember m
+		on tb.catalog_id = 4 and m.mNo = tb.userMember_mNo
+        order by tb.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+	<select id="cCountPaging" resultType="int">
+	 <![CDATA[
+	 	select count(id)
+		from user_talents where catalog_id = 4
+	 ]]>
+	</select>
+
+
+<!-- 평점 리스트  -->
+<!-- 평점 추가되면 mapper 쿼리 바꿔야함 (스터디만)-->
+<select id="sListStar" resultMap="tBoard_Map">
+	
+	<![CDATA[
+		select 
+			tb.id as tboard_id,
+			tb.title as tboard_title, 
+			tb.image as tboard_image, 
+			tb.price as tboard_price, 
+			m.userid as member_id
+		from user_talents as tb
+		inner join userMember m
+		on tb.catalog_id = 3 and m.mNo = tb.userMember_mNo
+		limit #{pageStart}, #{perPageNum}
+	]]>
+
+
+	</select>
+
+
+
+</mapper>

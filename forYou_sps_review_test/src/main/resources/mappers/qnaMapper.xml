@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.QnaMapper">
+
+	<resultMap id="qna_Map" type="QnaVO">
+
+		<result property="id" column="qna_id" />
+
+		<result property="title" column="qna_title" />
+
+		<result property="contents" column="qna_contents" />
+
+		<result property="regdate" column="qna_regdate" />
+
+		<association property="memberVO" javaType="MemberVO">
+
+			<id property="mNo" column="member_mNo" />
+
+			<id property="userid" column="member_id" />
+
+			<id property="email" column="member_email" />
+
+		</association>
+
+	</resultMap>
+
+
+	<insert id="create">
+		insert into user_qna (title, contents, userMember_mNo)
+		values (#{title}, #{contents}, #{memberVO.mNo})
+	</insert>
+
+	<select id="readBoard" resultMap="qna_Map">
+
+		select
+	        q.id as qna_id,
+			q.title as qna_title,
+			q.contents as qna_contents,
+			q.regdate as qna_regdate,
+			q.userMember_mNo as userMember_mNo,
+			m.mNo as member_mNo,
+			m.userid as member_id,
+			m.email as member_email
+		from user_qna as q
+		inner join userMember m
+		on q.userMember_mNo = m.mNo and q.id = ${id}
+        order by q.regdate desc;
+
+	</select>
+
+	<update id="updateBoard">
+		update user_qna set title = #{title}, contents =
+		#{contents}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteBoard">
+		delete from user_qna where id = #{id}
+	</delete>
+
+	<select id="qListCriteria" resultMap="qna_Map">
+		<![CDATA[
+		select 
+			q.id as qna_id,
+			q.title as qna_title, 
+			q.contents as qna_contents, 
+			q.regdate as qna_regdate, 
+			m.userid as member_id
+		from user_qna as q
+		inner join userMember m
+		on m.mNo = q.userMember_mNo
+        order by q.regdate desc
+		limit #{pageStart}, #{perPageNum}
+	]]>
+	</select>
+	
+
+	<select id="qListCountCriteria" resultType="int">
+	 <![CDATA[
+		select count(id)
+		from user_qna
+		]]>
+	</select>
+
+	
+</mapper>

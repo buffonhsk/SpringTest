@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.choongang.mapper.ReviewMapper">
+	
+	<resultMap id="review_map"  type="ReviewVO">
+		<result property="id" column="review_id"/>
+		<result property="comment" column="review_comment"/>
+		<result property="starCount" column="review_starCount"/>
+		<result property="regdate" column="review_regdate"/>
+		
+		<association property="memberVO" javaType="MemberVO">
+			<id property="mNo" column="memeber_mNo"/>
+			<id property="userid" column="memeber_id"/>
+		</association>
+		
+		<association property="talentBoardVO" javaType="TalentBoardVO">
+			<id property="id" column="tboard_id"/>
+		</association>
+	</resultMap>
+
+	<select id="list" resultMap="review_map">
+		select 
+			ur.comment as review_comment, 
+			ur.starCount as review_starCount,
+			ur.regdate as review_regdate,
+			m.userid as memeber_id
+			tb.id as tboard_id
+		from user_review as ur
+		inner join userMember m
+		inner join user_talents tb
+		on m.mNo = ur.userMember_mNo and tb.id = ur.user_talents_id
+		order by ur.id desc
+	</select>
+	
+	<insert id="create">
+		insert into user_review (userMember_mNo, user_talents_id, comment, star_count)
+		values(#{memberVO.mNo}, #{talentBoardVO.id}, #{comment}, #{starCount} )
+	</insert>
+	
+	<update id="update">
+		update user_review set comment = #{comment}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_review where id = #{id}
+	</delete>
+	
+	<select id="listReviewPage" resultMap="review_map">
+		
+		select 
+		ur.star_count as review_starCount,
+		ur.id as review_id,
+		ur.comment as review_comment,
+		ur.regdate as review_regdate,
+		m.mNo as memeber_mNo,
+		m.userid as memeber_id,
+		tb.id as user_talents_id
+		from user_review as ur
+		inner join userMember as m
+		inner join user_talents as tb
+		on m.mNo = ur.userMember_mNo and tb.id = ur.user_talents_id
+		and ur.user_talents_id = #{id} 
+		order by ur.id desc
+		limit #{cri.pageStart}, #{cri.perPageNum}
+		
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(user_talents_id) from user_review
+		where user_talents_id = #{id}
+	</select>
+</mapper>
